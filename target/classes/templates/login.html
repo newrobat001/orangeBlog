@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<!-- 响应式 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>橙子技术社区</title>
+
+	<!-- 标签页图标 -->
+	<link rel="Shortcut Icon" href="/icon/logo.ico" type="image/x-icon" />
+	<script src="/js/jquery-3.1.1.min.js "></script>
+	<script src="/js/jquery-ui.min.js "></script>
+	<script src="/js/script-login.js "></script>
+	<link rel="stylesheet" href="/css/style-login.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Raleway:300,400%7COpen+Sans:400,400i,700%7CLibre+Baskerville:400i'
+		  rel='stylesheet'>
+	<!-- Css -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="/css/sliders.css"/>
+	<link rel="stylesheet" href="/css/style.css"/>
+	<link rel="stylesheet" href="/css/responsive.css"/>
+	<link rel="stylesheet" href="/css/spacings.css"/>
+	<link rel="stylesheet" href="/css/animate.min.css"/>
+
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		p {
+			color: #ffffff;
+		}
+		.site-link {
+			padding: 5px 15px;
+			position: fixed;
+			z-index: 99999;
+			background: #fff;
+			box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+			right: 30px;
+			bottom: 30px;
+			border-radius: 10px;
+		}
+
+		.site-link img {
+			width: 30px;
+			height: 30px;
+		}
+
+		.article-card {
+			display: flex;
+			align-items: center;
+		}
+
+		.left {
+			flex: 1;
+			width: 25%;
+			padding: 10px;
+		}
+
+		.right {
+			flex: 3;
+			padding: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- partial:index.partial.html -->
+<!--  加载图标	-->
+	<div class="loader-mask">
+		<div class="loader">
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+	<div class="body">
+		<div class="veen">
+
+			<div class="login-btn splits">
+				<p>已有帐户？</p>
+				<button class="active">登录</button>
+			</div>
+			<div class="rgstr-btn splits">
+				<p>没有账号？</p>
+				<button>注册</button>
+			</div>
+
+			<div class="wrapper">
+				<!-- 登录框 -->
+				<form id="login" onsubmit="return validateForm()" tabindex="500" method="post" th:action="@{/user/DoLogin}">
+					<h3>橙子技术社区</h3>
+					<div class="mail">
+						<input type="text" id="loginEmail" name="loginEmail">
+						<span id="usernameError" class="error-message"></span>
+						<label for="loginEmail">账号</label>
+					</div>
+					<div class="passwd">
+						<input type="password" id="loginPassword" name="loginPassword">
+						<span id="usernameError1" class="error-message"></span>
+						<label for="loginPassword">密码</label>
+					</div>
+					<div class="submit">
+						<button id="loginButton"  class="dark">GO</button>
+						<div id="successMessage" th:if="${success}" class="alert alert-success" role="alert">
+							<span th:text="${success}"></span>
+						</div>
+						<div id="errorMessage" th:if="${error}" class="alert alert-danger" role="alert">
+							<span th:text="${error}"></span>
+						</div>
+					</div>
+				</form>
+				<!-- 注册框 -->
+				<form id="register" tabindex="502" method="post" th:action="@{/user/register}" onsubmit=" return validateRegistrationForm() ">
+					<h3>注册</h3>
+					<div class="mail">
+						<input type="email" id="registerEmail" name="registerEmail">
+						<span id="registerEmailError" class="error-message"></span>
+						<label for="registerEmail">邮箱</label>
+					</div>
+					<div class="uid">
+						<input type="text" id="registerAccount" name="registerAccount">
+						<span id="registerAccountError" class="error-message"></span>
+						<label for="registerAccount">账号</label>
+					</div>
+					<div class="passwd">
+						<input type="password" id="registerPassword" name="registerPassword">
+						<span id="registerPasswordError" class="error-message"></span>
+						<label for="registerPassword">密码</label>
+					</div>
+					<div class="submit">
+						<button id="registerButton" class="dark" type="submit">GET</button>
+					</div>
+					<span>本网站仅作为毕设展示，请勿输入敏感信息，如真实邮箱、姓名等</span>
+				</form>
+
+			</div>
+
+		</div>
+
+	</div>
+	<!-- Footer Type-1 -->
+	<footer class="footer footer-type-1 bg-dark">
+		<div class="bottom-footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12 copyright text-center">
+                        <span>
+                          Copyright &copy; 2017.Company name All rights reserved.
+                        </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer> <!-- end footer -->
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/plugins.js"></script>
+	<script type="text/javascript" src="/js/scripts.js"></script>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		// 获取错误消息的元素
+		var errorMessage = document.getElementById('errorMessage');
+		var successMessage = document.getElementById('successMessage');
+		// 如果存在错误消息，则设置定时器在5000毫秒（5秒）后隐藏消息
+		if (errorMessage) {
+			setTimeout(function () {
+				errorMessage.style.display = 'none';
+			}, 3000);
+		}
+		if (successMessage) {
+			setTimeout(function () {
+				successMessage.style.display = 'none';
+			}, 3000);
+		}
+
+		/*]]>*/
+		//判断登录框不能为空
+		function validateForm() {
+			var emailInput = document.getElementById("loginEmail");
+			var passwordInput = document.getElementById("loginPassword");
+
+			var emailError = document.getElementById("usernameError");
+			var passwordError = document.getElementById("usernameError1");
+
+			// 检查邮箱/用户名是否为空
+			if (emailInput.value.trim() === "") {
+				emailError.innerHTML = "邮箱/用户名不能为空";
+				return false;
+			} else {
+				emailError.innerHTML = "";
+			}
+
+			// 检查密码是否为空
+			if (passwordInput.value.trim() === "") {
+				passwordError.innerHTML = "密码不能为空";
+				return false;
+			} else {
+				passwordError.innerHTML = "";
+			}
+
+			// 所有验证通过
+			return true;
+		}
+		//判断注册输入框不能为空
+		function validateRegistrationForm() {
+			var emailInput = document.getElementById("registerEmail");
+			var accountInput = document.getElementById("registerAccount");
+			var passwordInput = document.getElementById("registerPassword");
+
+			// 获取错误消息元素
+			var emailError = document.getElementById("registerEmailError");
+			var accountError = document.getElementById("registerAccountError");
+			var passwordError = document.getElementById("registerPasswordError");
+
+			// 检查邮箱是否为空
+			if (emailInput.value.trim() === "") {
+				emailError.innerHTML = "邮箱不能为空";
+				return false;
+			} else {
+				emailError.innerHTML = "";
+			}
+
+			// 检查账号是否为空
+			if (accountInput.value.trim() === "") {
+				accountError.innerHTML = "账号不能为空";
+				return false;
+			} else {
+				accountError.innerHTML = "";
+			}
+
+			// 检查密码是否为空
+			if (passwordInput.value.trim() === "") {
+				passwordError.innerHTML = "密码不能为空";
+				return false;
+			} else {
+				passwordError.innerHTML = "";
+			}
+			// 所有验证通过
+			return true;
+		}
+	</script>
+</body>
+
+</html>

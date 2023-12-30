@@ -1,0 +1,48 @@
+server:
+  port: 8088
+  servlet:
+    session:
+      tracking-modes: cookie
+      timeout: 5m # 设置session的有效期为五分钟
+
+upload:
+#  path: d:///www/wwwroot/image/
+  path: /www/wwwroot/image/
+
+spring:
+  servlet:
+    #图片上传和下载大小限制 5MB
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/orangeblog?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+#    username: root
+#    password: 123456
+    username: orangeblog
+    password: FS8iaE4THZmFzf8W
+  application:
+    #应用名称
+    name: orangeBlog
+  thymeleaf:
+    cache: true
+    # 开发时关闭缓存，不然看不到实时页面
+  devtools:
+    livereload:
+      enabled: true
+
+mybatis:
+  #对应mapper.xml位置
+  mapper-locations: classpath:mapper/*.xml
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true  # 驼峰命名
+  global-config:
+    db-config:
+      id-type: auto  # 指定 ID 的生成策略为雪花算法
+
+
+
+

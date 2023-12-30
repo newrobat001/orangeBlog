@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orangeBlog.mapper.CommentMapper">
+
+    <sql id="commentColumns">
+        id, article_id, user_id, content, top_comment_id, parent_comment_id, deleted, create_time, update_time
+    </sql>
+
+    <!-- 一级评论 -->
+    <select id="getDirect" resultType="com.orangeBlog.dto.CommentDTO">
+        SELECT
+            <include refid="commentColumns" />
+        FROM comment
+        WHERE parent_comment_id = 0 and article_id = #{articleId};
+
+    </select>
+
+    <!-- 二级评论 -->
+    <select id="getChild" resultType="com.orangeBlog.dto.CommentDTO">
+        SELECT
+            <include refid="commentColumns" />
+        FROM comment
+        WHERE parent_comment_id = #{getDirectId};
+    </select>
+
+    <!--  三级评论  -->
+    <select id="getTh" resultType="com.orangeBlog.dto.CommentDTO">
+        SELECT
+        <include refid="commentColumns" />
+        FROM comment
+        WHERE parent_comment_id = #{getChildId};
+    </select>
+
+
+</mapper>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 响应式 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 标签页图标 -->
+    <link rel="Shortcut Icon" href="/icon/logo.ico" type="image/x-icon"/>
+    <title>编辑</title>
+    <link rel="stylesheet" href="/editor/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/editor/plugins/editor.md/css/editormd.min.css">
+    <link rel="stylesheet" href="/editor/plugins/selectize/css/selectize.default.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/editor/plugins/select2/css/select2.min.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="/editor/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="/editor/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/editor/css/adminlte.min.css">
+</head>
+<body class="hold-transition layout-top-nav">
+<!--  加载图标	-->
+<div class="loader-mask">
+    <div class="loader">
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<!-- Site wrapper -->
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+        <div class="container-fluid pl-5 pr-5">
+            <a th:href="'/user/info?id='+${session.userinfo.id} " class="navbar-brand">
+                <img  th:if="${session.userinfo} != null" th:src="'/img/' + ${session.userinfo.headPhoto}" class="brand-image img-circle elevation-3">
+                <span class="brand-text font-weight-light"
+                      th:if="${session.user != null }" th:text="${session.user}">用户</span>
+            </a>
+
+
+        </div>
+    </nav>
+    <!-- /.navbar -->
+
+    <div class="container-fluid pl-5 pr-5 mt-3">
+        <form id="blogForm"  th:action="@{/article/getArticle}"  method="post">
+            <!-- /.card-body -->
+            <div class="card card-teal card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">博客信息</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label for="title" class="input-group-text" >标题</label>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="text" class="form-control" id="title" name="title"
+                                           placeholder="博客标题(必填, 30字内)..."
+                                           maxlength="50"
+                                           >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <!-- radio -->
+                            <div class="form-group clearfix">
+                                <div class="icheck-default d-inline-block">
+                                    <input type="radio" id="original" name="creationType" value= 1 checked="checked">
+                                    <label for="original">原创</label>
+                                </div>
+                                <div class="icheck-default d-inline-block ml-3">
+                                    <input type="radio" id="reprinted" name="creationType" value= 2 >
+                                    <label for="reprinted">转载</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="categoryId">分类</label>
+                                <select id="categoryId"
+                                        name="categoryId"
+                                        class="select2"
+                                        data-placeholder="选择分类(必选)...."
+                                        style= "width: 100%;"
+                                         >
+                                    <option></option>
+                                    <!-- CategoryNames -->
+                                    <option th:each="CategoryName : ${CategoryNames}" th:value="${CategoryName.id}" th:text="${CategoryName.categoryName}"></option>
+                                </select>
+                            </div>
+                            <!-- /.form-group -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tagId">标签</label>
+                                <select id="tagId" name="tagId" class="select2" multiple="multiple" data-placeholder="选择标签...."
+                                        style="width: 100%;">
+                                    <!-- TagNames CategoryNames -->
+                                    <option th:each="tag : ${TagNames}" th:value="${tag.id}" th:text="${tag.tagName}"></option>
+                                </select>
+                            </div>
+                            <!-- /.form-group -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="description">简介</label>
+                                <textarea class="form-control" rows="3" id="description" name="description"
+                                          placeholder="为你的博客添加简介（必填, 200字内）..."
+                                          maxlength="200" style="resize:none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!--设置封面图-->
+                    <div class="row">
+                          <aside  th:replace="fragments/upload"></aside>
+                    </div>
+                    <!--发布保存按钮-->
+                    <div class="row">
+                        <div class="col-md-10">
+                            <button id="publishBtn" type="submit" class="btn btn-sm btn-success float-right">
+                                <i class="fa fa-edit"></i>
+                                发布
+                            </button>
+                            <button id="saveBtn" type="submit" class="btn btn-sm btn-dark float-right mr-1">
+                                <i class="fa fa-save"></i>
+                                保存
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+
+            <!-- /.card-body -->
+            <div id="editormd" class="form-group mb-3">
+                <textarea name="content" id="content">
+---
+
+# 前言
+`提示：这里可以添加本文要记录的大概内容：`
+
+---
+
+`提示：以下是本篇文章正文内容，下面案例可供参考`
+
+# 一、java是什么？
+示例：ava 是一种广泛使用的、面向对象的、跨平台的编程语言。它最初由Sun Microsystems（后被Oracle收购）的James Gosling等人开发，并于1995年正式推出。
+
+# 二、使用步骤
+## 1.下载并配置环境
+
+## 2.hello world
+代码如下（示例）：
+```
+public class First(){
+    public static void main(String[] args){
+        Syetem.out.println("helloword!")
+    }
+}
+```
+
+---
+
+# 总结
+提示：这里对文章进行总结：
+例如：以上就是今天要讲的内容，本文仅仅简单介绍了Java的示例，而Java提供了很多常用工具库。
+                </textarea>
+            </div>
+
+            <input type="hidden" id="isPublish" name="isPublish">
+            <input type="hidden" id="UserId" name="UserId" th:value="${session.userinfo.id}">
+
+        </form>
+
+    </div>
+</div>
+<!-- /editor/wrapper -->
+
+<!--新增弹窗-->
+<div class="modal fade" id="addTagModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">新增标签</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="tagInput" name="tag" value="awesome,neat">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button id="addTagBtn" type="button" class="btn btn-success">新增</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="addCategoryModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">新增标签</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="categoryInput" name="category" value="前端,后台">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button id="addCategoryBtn" type="button" class="btn btn-success">新增</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<!-- jQuery -->
+<script src="/editor/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/editor/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/editor/js/adminlte.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="/editor/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="/editor/plugins/editor.md/js/editormd.min.js"></script>
+<!-- Select2 -->
+<script src="/editor/plugins/select2/js/select2.full.min.js"></script>
+<script src="/editor/plugins/selectize/js/standalone/selectize.min.js"></script>
+<script src="/editor/js/edit.js"></script>
+
+</body>
+</html>

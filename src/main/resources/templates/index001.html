@@ -1,0 +1,694 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>橙子技术社区</title>
+  <!-- 标签页图标 -->
+  <link rel="Shortcut Icon" href="/icon/logo.ico" type="image/x-icon"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="">
+  <!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Raleway:300,400%7COpen+Sans:400,400i,700%7CLibre+Baskerville:400i'
+        rel='stylesheet'>
+  <!-- Css -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/css/font-icons.css"/>
+  <link rel="stylesheet" href="/css/sliders.css"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/responsive.css"/>
+  <link rel="stylesheet" href="/css/spacings.css"/>
+  <link rel="stylesheet" href="/css/animate.min.css"/>
+
+  <style>
+    .text-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      border: 1px black;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body class="relative">
+
+<!-- Preloader -->
+<div class="loader-mask">
+  <div class="loader">
+    <div></div>
+    <div></div>
+  </div>
+</div>
+
+<div class="main-wrapper oh">
+
+  <header class="nav-type-1 dark-nav">
+
+    <!-- Fullscreen search -->
+    <div class="search-wrap">
+      <div class="search-inner">
+        <div class="search-cell">
+          <form method="get">
+            <div class="search-field-holder">
+              <input type="search" class="form-control main-search-input" placeholder="Search for">
+              <div class="search-submit-icon"><i class="icon icon_search"></i></div>
+              <input type="submit" class="search-submit" value="search">
+            </div>
+          </form>
+        </div>
+      </div>
+      <i class="icon icon_close search-close" id="search-close"></i>
+    </div> <!-- end fullscreen search -->
+
+    <nav class="navbar navbar-fixed-top">
+      <div class="navigation">
+        <div class="container relative">
+
+          <div class="row">
+
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div> <!-- end navbar-header -->
+
+
+            <!-- side menu -->
+            <div class="side-menu nav-left hidden-sm hidden-xs">
+              <div class="nav-inner">
+                <div class="nav-search-wrap hidden-sm hidden-xs">
+                  <a href="#" class="nav-search search-trigger">
+                    <i class="icon icon_search"></i>
+                  </a>
+                </div>
+              </div>
+            </div> <!-- end side menu -->
+
+            <div class="col-md-12 nav-wrap">
+              <div class="collapse navbar-collapse text-center" id="navbar-collapse">
+
+                <ul class="nav navbar-nav">
+
+                  <li><a href="index.html">首页</a></li>
+                  <li><a href="/about.html">About</a></li>
+                  <li><a href="/blog-single.html">写博客</a></li>
+                  <li><a href="/contact.html">Contact</a></li>
+                  <!-- todo:登录 -->
+<!--                  <li><a id="login-a" href="/user/login.html" >登录</a></li>-->
+                  <li><a id="login-a" href="/user/login.html" th:if="${user == null or user.username == null}">登录</a></li>
+                  <li><a id="login-b" href="/user/info?id=${}" th:if="${user != null and user.username != null}" th:text="${user.username}">Username</a></li>
+
+                  <!--th:text="${user.username}"-->
+                  <li id="mobile-search" class="hidden-lg hidden-md">
+                    <form method="get" class="mobile-search">
+                      <input type="search" class="form-control" placeholder="Search...">
+                      <button type="submit" class="search-button">
+                        <i class="icon icon_search"></i>
+                      </button>
+                    </form>
+                  </li>
+
+                </ul> <!-- end menu -->
+              </div> <!-- end collapse -->
+            </div> <!-- end col -->
+
+            <!-- side menu -->
+            <div class="side-menu right mobile-left-align">
+              <div class="nav-inner menu-socials social-icons">
+                <div class="right">
+                  <a href="#"><i class="fa fa-instagram"></i></a>
+                  <a href="#"><i class="fa fa-facebook"></i></a>
+                  <a href="#"><i class="fa fa-twitter"></i></a>
+                  <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                  <a href="#"><i class="fa fa-heart"></i></a>
+                </div>
+              </div>
+            </div> <!-- end side menu -->
+
+          </div> <!-- end row -->
+        </div> <!-- end container -->
+      </div> <!-- end navigation -->
+    </nav> <!-- end navbar -->
+  </header>
+
+
+  <!--    logo  -->
+  <div class="content-wrapper oh">
+
+    <!-- Latest Stories -->
+    <section class="section-wrap latest-stories pb-0">
+      <div class="container-fluid nopadding">
+
+        <div class="heading-row text-center mb-40">
+          <h1 class="heading uppercase small">橙子技术社区</h1>
+        </div>
+
+        <div id="main-slider" class="flickity-slider-wrap">
+
+          <!-- 上层文章推荐 -->
+          <div class="gallery-cell">
+            <article>
+              <a href="blog-single.html" class="entry-img">
+                <img src="/img/main_slide_1.jpg" alt="">图片article.picture
+                <span class="entry-category">article.category</span>
+              </a>
+              <div class="entry text-center">
+                <h4 class="entry-title uppercase"><a href="blog-single.html">article.title</a></h4>
+                <span class="entry-date">article.createTime</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="gallery-cell">
+            <article>
+              <a href="blog-single.html" class="entry-img">
+                <img src=" /img/main_slide_2.jpg" alt="">
+                <span class="entry-category">Travel</span>
+              </a>
+              <div class="entry text-center">
+                <h4 class="entry-title uppercase"><a href="blog-single.html">代码怎么保存？学会Git,轻松解决</a></h4>
+                <span class="entry-date">Jul 14, 2016</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="gallery-cell">
+            <article>
+              <a href="blog-single.html" class="entry-img">
+                <img src=" /img/main_slide_3.jpg" alt="">
+                <span class="entry-category">Lifestyle</span>
+              </a>
+              <div class="entry text-center">
+                <h4 class="entry-title uppercase"><a href="blog-single.html">陷入迷茫怎样调节，分享一些心得</a></h4>
+                <span class="entry-date">Jul 14, 2016</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="gallery-cell">
+            <article>
+              <a href="blog-single.html" class="entry-img">
+                <img src=" /img/main_slide_4.jpg" alt="">
+                <span class="entry-category">Beauty</span>
+              </a>
+              <div class="entry text-center">
+                <h4 class="entry-title uppercase"><a href="blog-single.html">浅谈儿童心理健康与家庭教育影响</a></h4>
+                <span class="entry-date">Jul 14, 2016</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="gallery-cell">
+            <article>
+              <a href="blog-single.html" class="entry-img">
+                <img src=" /img/main_slide_5.jpg" alt="">
+                <span class="entry-category">Lifestyle</span>
+              </a>
+              <div class="entry text-center">
+                <h4 class="entry-title uppercase"><a href="blog-single.html">求助：我的电脑怎么启动不了MySQL服务了？</a></h4>
+                <span class="entry-date">Jul 14, 2016</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="gallery-cell">
+            <article>
+              <a href="blog-single.html" class="entry-img">
+                <img src=" /img/main_slide_6.jpg" alt="">
+                <span class="entry-category">Travel</span>
+              </a>
+              <div class="entry text-center">
+                <h4 class="entry-title uppercase"><a href="blog-single.html">震惊！人工智能终于要代替基层工作者了？</a></h4>
+                <span class="entry-date">Jul 14, 2016</span>
+              </div>
+            </article>
+          </div>
+
+        </div>
+      </div>
+    </section> <!-- end latest stories -->
+
+    <!-- Content -->
+    <section class="content blog-standard">
+      <div class="container relative">
+        <div class="row">
+
+          <!-- post content -->
+          <div class="col-md-9 post-content mb-50">
+            <!--                todo：推荐1-->
+
+            <!-- large post -->
+            <article class="entry-item large-post">
+
+              <div class="entry-header">
+                <a href="#" class="entry-category">Lifestyle</a>
+                <h2 class="entry-title">
+                  <a href="blog-single.html">escape from reality</a>
+                </h2>
+              </div>
+
+              <a href="blog-single.html" class="entry-slider">
+                <div class="flexslider" id="flexslider">
+                  <ul class="slides clearfix">
+                    <li>
+                      <img src="https://cdn.pixabay.com/photo/2016/01/13/10/08/tech-1137487_1280.jpg" alt="">
+                      <div class="text-overlay">文章标题</div>
+                    </li>
+                    <li>
+                      <img src="https://cdn.pixabay.com/photo/2023/09/13/02/42/network-8249918_1280.jpg" alt="">
+                      <div class="text-overlay">文章标题</div>
+                    </li>
+                    <li>
+                      <img src="https://cdn.pixabay.com/photo/2020/07/23/15/34/mother-board-5431664_1280.jpg" alt="">
+                      <div class="text-overlay">文章标题</div>
+                    </li>
+                  </ul>
+                </div>
+              </a> <!-- end slider -->
+
+              <div class="entry-wrap">
+                <div class="entry">
+
+                  <div class="entry-content">
+
+                    <div class="text-center">
+                      <a href="blog-single.html" class="read-more underline-link">Read More</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article> <!-- end large post -->
+
+
+            <!--                todo：推荐2-->
+
+
+            <!-- grid posts -->
+            <!--                todo：推荐3-->
+            <div class="row items-grid">
+              <div class="col-sm-6">
+                <article class="entry-item">
+                  <div class="entry-img">
+                    <a href="blog-single.html">
+                      <img src="https://cdn.pixabay.com/photo/2020/01/26/20/14/computer-4795762_1280.jpg" alt="">
+                    </a>
+                  </div>
+                  <div class="entry-header">
+                    <a href="#" class="entry-category">新闻</a>
+                    <h2 class="entry-title">
+                      <a href="blog-single.html">新闻标题</a>
+                    </h2>
+                  </div>
+                  <div class="entry-wrap">
+                    <div class="entry">
+                      <div class="entry-content">
+                        <p>简介。。。
+                        </p>
+                      </div>
+                      <div class="entry-meta-wrap clearfix">
+                        <ul class="entry-meta">
+                          <li class="entry-date">
+                            <a href="#">August 30, 2016</a>
+                          </li>
+                          <li class="entry-comments">
+                            <a href="blog-single.html">2 Comments</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <!--                todo：推荐4-->
+              <div class="col-sm-6">
+                <article class="entry-item">
+                  <div class="entry-img">
+                    <a href="blog-single.html">
+                      <img src="https://cdn.pixabay.com/photo/2019/07/14/16/27/pen-4337521_1280.jpg" alt="">
+                    </a>
+                  </div>
+                  <div class="entry-header">
+                    <a href="#" class="entry-category">Travel</a>
+                    <h2 class="entry-title">
+                      <a href="blog-single.html">revolve in mexico</a>
+                    </h2>
+                  </div>
+                  <div class="entry-wrap">
+                    <div class="entry">
+                      <div class="entry-content">
+                        <p>简介。。。
+                        </p>
+                      </div>
+                      <div class="entry-meta-wrap clearfix">
+                        <ul class="entry-meta">
+                          <li class="entry-date">
+                            <a href="#">August 30, 2016</a>
+                          </li>
+                          <li class="entry-comments">
+                            <a href="blog-single.html">2 Comments</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <!--                todo：推荐5-->
+              <div class="col-sm-6">
+                <article class="entry-item">
+                  <div class="entry-img">
+                    <a href="blog-single.html">
+                      <img src="https://cdn.pixabay.com/photo/2020/04/10/01/17/airpods-5023660_1280.jpg" alt="">
+                    </a>
+                  </div>
+                  <div class="entry-header">
+                    <a href="#" class="entry-category">Travel</a>
+                    <h2 class="entry-title">
+                      <a href="blog-single.html">exploring Redwood</a>
+                    </h2>
+                  </div>
+                  <div class="entry-wrap">
+                    <div class="entry">
+                      <div class="entry-content">
+                        <p>简介4：。。。
+                        </p>
+                      </div>
+                      <div class="entry-meta-wrap clearfix">
+                        <ul class="entry-meta">
+                          <li class="entry-date">
+                            <a href="#">August 30, 2016</a>
+                          </li>
+                          <li class="entry-comments">
+                            <a href="blog-single.html">2 Comments</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <!--                todo：推荐6-->
+              <div class="col-sm-6">
+                <article class="entry-item">
+                  <div class="entry-img">
+                    <a href="blog-single.html">
+                      <img src=" https://cdn.pixabay.com/photo/2015/11/09/14/43/laptop-1035345_1280.jpg" alt="">
+                    </a>
+                  </div>
+                  <div class="entry-header">
+                    <a href="#" class="entry-category">Lifestyle</a>
+                    <h2 class="entry-title">
+                      <a href="blog-single.html">Spring Inspiration</a>
+                    </h2>
+                  </div>
+                  <div class="entry-wrap">
+                    <div class="entry">
+                      <div class="entry-content">
+                        <p>Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis
+                          sem nibh id elit. Duis sed odio sit amet nibh vulput ate cursus a sit amet mauris. Morbi
+                          accumsan ipsum velit. Namec elit tellus a odio tincidunt auctor a ornare odio. Sed non
+                          mauris vitae...
+                        </p>
+                      </div>
+                      <div class="entry-meta-wrap clearfix">
+                        <ul class="entry-meta">
+                          <li class="entry-date">
+                            <a href="#">August 30, 2016</a>
+                          </li>
+                          <li class="entry-comments">
+                            <a href="blog-single.html">2 Comments</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+            </div> <!-- end grid posts -->
+
+
+            <!--todo：推荐7 -->
+            <!-- grid posts -->
+            <div class="row">
+              <div class="col-sm-6">
+                <article class="entry-item">
+                  <div class="entry-img">
+                    <a href="blog-single.html">
+                      <img src="https://cdn.pixabay.com/photo/2016/07/03/18/04/tech-1495181_1280.jpg" alt="">
+                    </a>
+                  </div>
+                  <div class="entry-header">
+                    <a href="#" class="entry-category">Travel</a>
+                    <h2 class="entry-title">
+                      <a href="blog-single.html">Trip in Brazil</a>
+                    </h2>
+                  </div>
+                  <div class="entry-wrap">
+                    <div class="entry">
+                      <div class="entry-content">
+                        <p>简介7
+                        </p>
+                      </div>
+                      <div class="entry-meta-wrap clearfix">
+                        <ul class="entry-meta">
+                          <li class="entry-date">
+                            <a href="#">August 30, 2016</a>
+                          </li>
+                          <li class="entry-comments">
+                            <a href="blog-single.html">2 Comments</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <!--                todo：推荐8-->
+              <div class="col-sm-6">
+                <article class="entry-item">
+                  <div class="entry-img">
+                    <a href="blog-single.html">
+                      <!--                        <img src=" /img/post_7.jpg" alt="">-->
+                      <img src="https://cdn.pixabay.com/photo/2023/08/16/23/49/snail-8195174_1280.jpg" alt="">
+
+                    </a>
+                  </div>
+                  <div class="entry-header">
+                    <a href="#" class="entry-category">教程</a>
+                    <h2 class="entry-title">
+                      <a href="blog-single.html">如何使用云服务器让你的网页上线</a>
+                    </h2>
+                  </div>
+                  <div class="entry-wrap">
+                    <div class="entry">
+                      <div class="entry-content">
+                        <p>
+                        </p>
+                      </div>
+                      <div class="entry-meta-wrap clearfix">
+                        <ul class="entry-meta">
+                          <li class="entry-date">
+                            <a href="#">August 30, 2016</a>
+                          </li>
+                          <li class="entry-comments">
+                            <a href="blog-single.html">2 Comments</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div> <!-- end grid posts -->
+
+          </div> <!-- end col -->
+
+          <!-- Sidebar -->
+          <aside class="col-md-3 sidebar">
+            <div class="widget about-blog text-center">
+              <div class="heading-lines">
+                <h3 class="widget-title heading">猜你想看</h3>
+              </div>
+
+              <!-- todo:这里时侧边推荐文章 -->
+              <div th:each="article : ${articles}">
+                <!--                    <h5 class="card-title"><a href="#" class="card-link"  >articles Title</a></h5>-->
+                <p class="mb-20 mt-30" th:text=" ${article.title}">articles Title</p>
+              </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="widget categories">
+              <div class="heading-lines">
+                <h3 class="widget-title heading">分类</h3>
+              </div>
+              <ul class="list-dividers">
+                <li>
+                  <a href="#">前端</a><span>(8)</span>
+                </li>
+                <li>
+                  <a href="#">后端</a><span>(14)</span>
+                </li>
+                <li>
+                  <a href="#">经验</a><span>(5)</span>
+                </li>
+                <li>
+                  <a href="#">新闻</a><span>(3)</span>
+                </li>
+                <li>
+                  <a href="#">教程</a><span>(7)</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Recent Posts -->
+            <div class="widget recent-posts">
+              <div class="heading-lines">
+                <h3 class="widget-title heading">Recent Posts</h3>
+              </div>
+              <div class="entry-list w-thumbs">
+                <ul class="posts-list list-dividers">
+                  <li class="entry-li">
+                    <article class="post-small clearfix">
+                      <div class="entry-img">
+                        <a href="blog-single.html">
+                          <img src=" /img/recent_1.jpg" alt="">
+                        </a>
+                      </div>
+                      <div class="entry">
+                        <h3 class="entry-title"><a href="magazine-single-article.html">Best Beaches in Sydney</a></h3>
+                        <ul class="entry-meta list-inline">
+                          <li class="entry-date">
+                            <a href="#">19 Mar, 2016</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </article>
+                  </li>
+                  <li class="entry-li">
+                    <article class="post-small clearfix">
+                      <div class="entry-img">
+                        <a href="blog-single.html">
+                          <img src=" /img/recent_2.jpg" alt="">
+                        </a>
+                      </div>
+                      <div class="entry">
+                        <h3 class="entry-title"><a href="magazine-single-article.html">First Summer Ice Cream</a></h3>
+                        <ul class="entry-meta list-inline">
+                          <li class="entry-date">
+                            <a href="#">16 Mar, 2016</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </article>
+                  </li>
+                  <li class="entry-li">
+                    <article class="post-small clearfix">
+                      <div class="entry-img">
+                        <a href="blog-single.html">
+                          <img src=" /img/recent_3.jpg" alt="">
+                        </a>
+                      </div>
+                      <div class="entry">
+                        <h3 class="entry-title"><a href="magazine-single-article.html">Best Hat for Travel</a></h3>
+                        <ul class="entry-meta list-inline">
+                          <li class="entry-date">
+                            <a href="#">16 Mar, 2016</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </article>
+                  </li>
+                  <li class="entry-li">
+                    <article class="post-small clearfix">
+                      <div class="entry-img">
+                        <a href="blog-single.html">
+                          <img src=" /img/recent_4.jpg" alt="">
+                        </a>
+                      </div>
+                      <div class="entry">
+                        <h3 class="entry-title"><a href="magazine-single-article.html">New Look is Arrived</a></h3>
+                        <ul class="entry-meta list-inline">
+                          <li class="entry-date">
+                            <a href="#">16 Mar, 2016</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </article>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Latest Tweets -->
+            <div class="widget categories">
+              <div class="heading-lines">
+                <h3 class="widget-title heading">Latest Tweets</h3>
+              </div>
+              <div class="twitter-slider text-center">
+                <i class="fa fa-twitter twitter-icon"></i>
+                <a href="#">@deothemes</a>
+                <div id="tweets"></div>
+              </div>
+            </div>
+
+          </aside> <!-- end sidebar -->
+
+        </div> <!-- end row -->
+      </div> <!-- end container -->
+    </section> <!-- end content -->
+
+    <!-- Footer Type-1 -->
+    <footer class="footer footer-type-1 bg-dark">
+      <div class="bottom-footer">
+        <div class="container">
+          <div class="row">
+
+            <div class="col-sm-12 copyright text-center">
+                <span>
+                  Copyright &copy; 2017.Company name All rights reserved.
+                </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </footer> <!-- end footer -->
+
+
+    <div id="back-to-top">
+      <a href="#top"><i class="fa fa-angle-up"></i></a>
+    </div>
+
+  </div> <!-- end content wrapper -->
+</div> <!-- end main wrapper -->
+
+<!-- jQuery Scripts -->
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/plugins.js"></script>
+<script type="text/javascript" src="/js/twitterFetcher_min.js"></script>
+<script type="text/javascript" src="/js/scripts.js"></script>
+
+<!-- Instafeed -->
+<script type="text/javascript">
+  $(window).load(function () {
+
+  });
+
+</script>
+
+
+</body>
+
+</html>
+</html>

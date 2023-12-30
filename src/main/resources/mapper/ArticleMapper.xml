@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orangeBlog.mapper.ArticleMapper">
+    <sql id="baseColumnList">
+        id, user_id, title, short_title, picture, category_id, source, source_url,
+        status, deleted, create_time, update_time
+    </sql>
+
+    <select id="getRecommendedArticlesWithType" resultType="com.orangeBlog.entity.Article">
+
+    </select>
+    <select id="getRecWithType" resultType="com.orangeBlog.entity.Article">
+        SELECT
+        <include refid="baseColumnList" />
+        FROM article
+        WHERE id IN (SELECT  article_id FROM recommended WHERE type = #{type});
+    </select>
+    <select id="getAll" resultType="com.orangeBlog.entity.Article">
+        select  <include refid="baseColumnList" />
+        from article;
+    </select>
+    <select id="getlistById" resultType="com.orangeBlog.entity.Article">
+        select  <include refid="baseColumnList" />
+        from article
+        where user_id = #{id}
+    </select>
+    <select id="getRecently" resultType="com.orangeBlog.entity.Article">
+        select
+        <include refid="baseColumnList" />
+        from article
+        ORDER BY
+        create_time DESC  -- 按时间降序排序
+        LIMIT
+        5
+    </select>
+
+
+</mapper>

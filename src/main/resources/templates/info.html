@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+    <style>
+        .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            border: 1px black;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        body.alternative-background {
+            background-color: #abb2b9;
+            /* 替换为你希望切换的背景颜色 */
+        }
+
+        .user-info-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            border-radius: 50%;
+            /* 让图片呈现圆形 */
+            width: 50px;
+            /* 设置图片宽度 */
+            height: 50px;
+            /* 设置图片高度，与宽度一样，形成圆形 */
+            margin-right: 10px;
+            /* 设置头像和名字之间的右边距，可以根据实际情况调整 */
+        }
+    </style>
+</head>
+
+<body class="relative">
+
+    <!-- 加载动画 -->
+    <div class="loader-mask">
+        <div class="loader">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+    <div class="main-wrapper oh">
+
+        <header class="nav-type-1 dark-nav">
+
+            <!-- Fullscreen search -->
+            <div class="search-wrap">
+                <div class="search-inner">
+                    <div class="search-cell">
+                        <form method="get">
+                            <div class="search-field-holder">
+                                <input type="search" class="form-control main-search-input" placeholder="Search for">
+                                <div class="search-submit-icon"><i class="icon icon_search"></i></div>
+                                <input type="submit" class="search-submit" value="search">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <i class="icon icon_close search-close" id="search-close"></i>
+            </div> <!-- end fullscreen search -->
+
+            <nav class="navbar navbar-fixed-top">
+                <div class="navigation">
+                    <div class="container relative">
+
+                        <div class="row">
+
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                    data-target="#navbar-collapse">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div> <!-- end navbar-header -->
+
+
+                            <!-- side menu -->
+                            <div class="side-menu nav-left hidden-sm hidden-xs">
+                                <div class="nav-inner">
+                                    <div class="nav-search-wrap hidden-sm hidden-xs">
+                                        <a href="#" class="nav-search search-trigger">
+                                            <i class="icon icon_search"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div> <!-- end side menu -->
+
+                            <div class="col-md-12 nav-wrap">
+                                <div class="collapse navbar-collapse text-center" id="navbar-collapse">
+
+                                    <ul class="nav navbar-nav">
+
+                                        <li><a href="/">首页</a></li>
+                                        <li><a th:href="@{/article/editor.html}">写博客</a></li>
+                                        <li><a href="/contact.html">关于我</a></li>
+                                        <li><a href="#" onclick="toggleBackgroundColor()">
+                                                <i class="fa ">换个颜色</i></a></li>
+                                        <!-- todo:登录 -->
+                                        <li><a id="login-a" href="user/login"
+                                                th:if="${session == null or session.user == null}"
+                                                onclick="login()">登录</a></li>
+                                        <li>
+                                            <a id="login-b" th:if="${session.user != null || userinfo.id != null}"
+                                                th:href="@{'/user/info?id=' + ${userinfo.id}}">
+                                                <span th:text="${session.user}">Username</span>
+                                            </a>
+                                        </li>
+
+                                        <li><a id="logout-a" th:href="@{/user/logout}"
+                                                th:if="${session.user != null }">退出</a>
+                                        </li>
+                                        <!--th:text="${user.username}"-->
+                                        <li id="mobile-search" class="hidden-lg hidden-md">
+                                            <form method="get" class="mobile-search">
+                                                <input type="search" class="form-control" placeholder="Search...">
+                                                <button type="submit" class="search-button">
+                                                    <i class="icon icon_search"></i>
+                                                </button>
+                                            </form>
+                                        </li>
+
+                                    </ul> <!-- end menu -->
+                                </div> <!-- end collapse -->
+                            </div> <!-- end col -->
+
+                            <!-- side menu -->
+                            <!-- end side menu -->
+
+                        </div> <!-- end row -->
+                    </div> <!-- end container -->
+                </div> <!-- end navigation -->
+            </nav> <!-- end navbar -->
+        </header>
+
+
+        <!--    logo  -->
+        <div class="content-wrapper oh">
+
+            <!-- Latest Stories -->
+            <section class="section-wrap latest-stories pb-0">
+                <div class="heading-row text-center mb-40">
+                    <!-- 判断用户名是否为空 -->
+                    <th:block th:if="${session.user != null}">
+                        <div class="user-info-container">
+<!--                            <img th:src="'/img/' + ${userinfo.headPhoto}" alt="User Avatar" class="user-avatar"/>-->
+                            <h1 class="heading uppercase small" th:text="${userinfo.personName}">Username</h1>
+                            <span>粉丝(999)</span>
+                            <span>关注(1)</span>
+                        </div>
+                    </th:block>
+                    <!-- 如果用户名为空，显示默认标题 -->
+                    <th:block th:unless="${session.user != null}">
+                        <h1 class="heading uppercase small">橙子技术社区</h1>
+                    </th:block>
+                </div>
+
+            </section> <!-- end latest stories -->
+
+            <!-- Content -->
+            <section class="content blog-standard">
+                <div class="container relative">
+                    <div class="row">
+
+                        <!-- post content -->
+                        <div class="col-md-9 post-content mb-50">
+                            <!--                todo：推荐1-->
+                            <!-- large post -->
+                            <article class="entry-item large-post">
+                                <div class="entry-header">
+                                    <p class="entry-category">旧书不厌百回读，熟读精思子自知</p>
+                                    <h2 class="entry-title">
+                                        <a href="blog-single.html">今日动态</a>
+                                    </h2>
+                                </div>
+                                <a href="blog-single.html" class="entry-slider">
+                                    <div class="flexslider" id="flexslider">
+                                        <ul class="slides clearfix">
+                                            <li th:each="article : ${articles2}">
+                                                <img th:src="${article.picture}" alt="">
+                                                <div class="text-overlay" th:text="${article.title}">默认标题</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </a> <!-- end slider -->
+                                <div class="entry-wrap">
+                                    <div class="entry">
+                                        <div class="entry-content">
+                                            <div class="text-center">
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article> <!-- end large post -->
+
+
+                            <!-- grid posts -->
+                            <!--                todo：推荐区3-->
+                            <div class="row ">
+                                <div class="col-sm-6" th:each="article3, iterStat : ${articles3}"
+                                    th:if="${iterStat.index < 2}">
+                                    <article class="entry-item">
+                                        <div class="entry-img">
+                                            <!--                                        <a th:href="@{'blog-single.html?id=' + ${article3[iterStat.count].id}}">-->
+                                            <img th:src="${article3.picture}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="entry-header">
+                                            <a href="#" class="entry-category">新闻</a>
+                                            <h2 class="entry-title">
+                                                <!--                                            -->
+                                                <a th:href="@{'blog-single.html?id=' + ${article3.id}}"
+                                                    th:text="${article3.title}">默认标题</a>
+                                            </h2>
+                                        </div>
+                                        <div class="entry-wrap">
+                                            <div class="entry">
+                                                <div class="entry-content">
+                                                    <p th:text="${article3.shortTitle}">简介...</p>
+                                                </div>
+                                                <div class="entry-meta-wrap clearfix">
+                                                    <ul class="entry-meta">
+                                                        <li class="entry-date">
+                                                            <!--                                                                                                                <a href="#" th:text="${#dates.format(article3.createTime, 'yyyy-MM-dd HH:mm:ss')}">August 30, 2016</a>-->
+                                                            <a href="#" th:text="${article3.createTime}">August 30,
+                                                                2016</a>
+                                                        </li>
+                                                        <li class="entry-comments">
+                                                            <a th:href="@{'blog-single.html?id=' + ${article3.id}}">#
+                                                                Comments</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div> <!-- end grid posts -->
+
+                            <div class="row ">
+                                <div class="col-sm-6" th:each="article3, iterStat : ${articles3}"
+                                    th:if="${iterStat.index < 4 and iterStat.index >= 2}">
+                                    <article class="entry-item">
+                                        <div class="entry-img">
+                                            <!--                                        <a th:href="@{'blog-single.html?id=' + ${article3[iterStat.count].id}}">-->
+                                            <img th:src="${article3.picture}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="entry-header">
+                                            <a href="#" class="entry-category">新闻</a>
+                                            <h2 class="entry-title">
+                                                <!--                                            -->
+                                                <a th:href="@{'blog-single.html?id=' + ${article3.id}}"
+                                                    th:text="${article3.title}">默认标题</a>
+                                            </h2>
+                                        </div>
+                                        <div class="entry-wrap">
+                                            <div class="entry">
+                                                <div class="entry-content">
+                                                    <p th:text="${article3.shortTitle}">简介...</p>
+                                                </div>
+                                                <div class="entry-meta-wrap clearfix">
+                                                    <ul class="entry-meta">
+                                                        <li class="entry-date">
+                                                            <!--                                                                                                                <a href="#" th:text="${#dates.format(article3.createTime, 'yyyy-MM-dd HH:mm:ss')}">August 30, 2016</a>-->
+                                                            <a href="#" th:text="${article3.createTime}">August 30,
+                                                                2016</a>
+                                                        </li>
+                                                        <li class="entry-comments">
+                                                            <a th:href="@{'blog-single.html?id=' + ${article3.id}}">#
+                                                                Comments</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+
+                            <div class="row ">
+                                <div class="col-sm-6" th:each="article3, iterStat : ${articles3}"
+                                    th:if="${iterStat.index < 6 and iterStat.index >= 4}">
+                                    <article class="entry-item">
+                                        <div class="entry-img">
+                                            <!--                                        <a th:href="@{'blog-single.html?id=' + ${article3[iterStat.count].id}}">-->
+                                            <img th:src="${article3.picture}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="entry-header">
+                                            <a href="#" class="entry-category">新闻</a>
+                                            <h2 class="entry-title">
+                                                <!--                                            -->
+                                                <a th:href="@{'blog-single.html?id=' + ${article3.id}}"
+                                                    th:text="${article3.title}">默认标题</a>
+                                            </h2>
+                                        </div>
+                                        <div class="entry-wrap">
+                                            <div class="entry">
+                                                <div class="entry-content">
+                                                    <p th:text="${article3.shortTitle}">简介...</p>
+                                                </div>
+                                                <div class="entry-meta-wrap clearfix">
+                                                    <ul class="entry-meta">
+                                                        <li class="entry-date">
+                                                            <!--                                                                                                                <a href="#" th:text="${#dates.format(article3.createTime, 'yyyy-MM-dd HH:mm:ss')}">August 30, 2016</a>-->
+                                                            <a href="#" th:text="${article3.createTime}">August 30,
+                                                                2016</a>
+                                                        </li>
+                                                        <li class="entry-comments">
+                                                            <a th:href="@{'blog-single.html?id=' + ${article3.id}}">#
+                                                                Comments</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                            <!-- grid posts -->
+                            <!-- end grid posts -->
+
+
+                        </div> <!-- end col -->
+
+                        <!-- Sidebar -->
+                        <aside class="col-md-3 sidebar">
+
+                            <div class="widget about-blog text-center">
+                                <div class="heading-lines">
+                                    <h3 class="widget-title heading">猜你想看</h3>
+                                </div>
+                                <!-- todo:这里时侧边推荐文章 -->
+                                <div th:each="article4 : ${articles4}">
+
+                                    <a href="#" class="mb-20 mt-30">
+                                        <p class="mb-20 mt-30" th:text=" ${article4.title}">articles Title</p>
+                                    </a>
+                                    <hr>
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- Categories -->
+                            <div class="widget categories">
+                                <div class="heading-lines">
+                                    <h3 class="widget-title heading">分类</h3>
+                                </div>
+                                <ul class="list-dividers">
+                                    <li th:each="category : ${categoryList}">
+                                        <a th:href="'#'" th:text="${category}"></a>
+                                        <span>(54)</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Recent Posts -->
+                            <div class="widget recent-posts">
+                                <div class="heading-lines">
+                                    <h3 class="widget-title heading">最新动态</h3>
+                                </div>
+                                <div class="entry-list w-thumbs">
+                                    <ul class="posts-list list-dividers">
+                                        <li th:each="article5 : ${articles5}" class="entry-li">
+                                            <article class="post-small clearfix">
+                                                <div class="entry-img">
+                                                    <a th:href="@{'blog-single.html?id=' + ${article5.id}}">
+                                                        <img th:src="${article5.picture}" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="entry">
+                                                    <h3 class="entry-title">
+                                                        <a th:href="@{'blog-single.html?id=' + ${article5.id}}"
+                                                            th:text="${article5.title}">Default Title</a>
+                                                    </h3>
+                                                    <ul class="entry-meta list-inline">
+                                                        <li class="entry-date">
+                                                            <a href="#" th:text="${article5.createTime}">Default
+                                                                Date</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </article>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Latest Tweets -->
+
+
+                        </aside> <!-- end sidebar -->
+
+                    </div> <!-- end row -->
+                </div> <!-- end container -->
+            </section> <!-- end content -->
+
+
+            <!-- Instagram Feed -->
+
+
+
+
+            <!-- Footer Type-1 -->
+            <footer class="footer footer-type-1 bg-dark">
+                <div class="bottom-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12 copyright text-center">
+                                <span>
+                                    Copyright &copy; 2017.Company name All rights reserved.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer> <!-- end footer -->
+
+
+            <div id="back-to-top">
+                <a href="#top"><i class="fa fa-angle-up"></i></a>
+            </div>
+
+        </div> <!-- end content wrapper -->
+    </div> <!-- end main wrapper -->
+
+    <!-- jQuery Scripts -->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/plugins.js"></script>
+    <script type="text/javascript" src="/js/twitterFetcher_min.js"></script>
+    <script type="text/javascript" src="/js/scripts.js"></script>
+
+    <!-- Instafeed -->
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+        function toggleBackgroundColor() {
+            var body = document.body;
+            body.classList.toggle('alternative-background');
+        }
+        /* ]]> */
+    </script>
+    </script>
+
+
+</body>
+
+</html>
+
+</html>
